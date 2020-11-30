@@ -1,24 +1,24 @@
 const router = require("express").Router();
 const fs = require("fs");
-const data = JSON.parse(fs.readFileSync("./assets/db/db.json", "utf8"));
+
+let notesData = [];
 
 router
-    .route("/api/notes")
-    .get((_req, res) => {
-        res.json(data);
-    })
+    // .route("/api/notes")
+    .get("/api/notes", function(err, res) {
+        notesData = fs.readFileSync("./assets/db/db.json", "utf8");
+        notesData = JSON.parse(notesData);
+
+        res.json(notesData);
+    });
 router
     .post("/api/notes", (req, res) => {
-        let uniqueId = (data.length).toString();
-        let newNote = req.body;
-        console.log(uniqueId);
-        data.push(newNote);
+        notesData = fs.readFileSync("./assets/db/db.json", "utf8");
+        console.log(notesData);
 
-        fs.writeFileSync("./db/db.json", JSON.stringify(data), function(err) {
-            if (err) throw (err)
-        });
+        notesData = JSON.parse(notesData);
 
-        res.json(data);
+        
 
     })
 router
@@ -33,7 +33,7 @@ router
             currentNote.id = newId.toString();
             newId++;
         }
-        fs.writeFileSync("./db/db.json", JSON.stringify(data));
+        fs.writeFileSync("./assets/db/db.json", JSON.stringify(data));
         res.json(data);
 
     });
