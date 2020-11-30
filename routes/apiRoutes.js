@@ -3,12 +3,12 @@ const fs = require("fs");
 const data = JSON.parse(fs.readFileSync("./assets/db/db.json", "utf8"));
 
 router
-    .route("/notes")
+    .route("/api/notes")
     .get((_req, res) => {
         res.json(data);
     })
 router
-    .post("/notes", (req, res) => {
+    .post("/api/notes", (req, res) => {
         let uniqueId = (data.length).toString();
         let newNote = req.body;
         console.log(uniqueId);
@@ -22,7 +22,7 @@ router
 
     })
 router
-    .delete("/notes", (req, res) => {
+    .delete("/api/notes", (req, res) => {
         let noteId = req.params.id;
         let newId = 0;
         console.log(`Note ${noteId} has been deleted.`);
