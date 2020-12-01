@@ -4,6 +4,25 @@ const fs = require("fs");
 const router = express();
 let notesData = [];
 
+// Server paths
+const routes = require("./htmlRoutes");
+
+const PORT = process.env.PORT || 8080;
+
+router.use(express.urlencoded({ extended: true }));
+
+router.use(express.json());
+
+router.use(express.static("./routes/assets/public"));
+
+router.use(routes);
+
+router.listen(PORT, () => {
+    console.log("router listening on PORT" + PORT);
+})
+
+
+
 router
     // .route("/api/notes")
     .get("/api/notes", function(err, res) {
