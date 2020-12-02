@@ -1,39 +1,38 @@
 const express = require("express");
 const fs = require("fs");
+const router = require("express").Router();
+const htmlRoutes = require("./htmlRoutes");
+// const db = require("../assets/db/db.json");
 
-const router = express();
+
+const app = express();
 let notesData = [];
+// notesData = db;
 
-// Server paths
+// Server routes/middleware
 const routes = require("./htmlRoutes");
 
 const PORT = process.env.PORT || 8080;
 
-router.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
-router.use(express.json());
+app.use(express.json());
 
-router.use(express.static("./routes/assets/public"));
+app.use(express.static("./assets/public"));
 
-router.use(routes);
-
-router.listen(PORT, () => {
-    console.log("router listening on PORT" + PORT);
-})
-
-
+app.use("/", htmlRoutes );
 
 router
-    // .route("/api/notes")
-    .get("/api/notes", function(err, res) {
-        notesData = fs.readFileSync("./db/db.json", "utf8");
+    .get("/api/notes", (err, res) => {
+        notesData = fs.readFileSync("../assets/db/db.json", "utf8");
         notesData = JSON.parse(notesData);
 
         res.json(notesData);
+       
     });
 router
     .post("/api/notes", (req, res) => {
-        notesData = fs.readFileSync("./db/db.json", "utf8");
+        notesData = fs.readFileSync("../assets/db/db.json", "utf8");
         console.log(notesData);
 
         notesData = JSON.parse(notesData);
@@ -44,13 +43,13 @@ router
 
         notesData = JSON.stringify(notesData);
 
-        fs.writeFile("./db/db.json", "utf8");
+        fs.writeFile("../assets/db/db.json", "utf8");
 
         res.json(JSON.parse(notesData));
     });
 router
     .delete("/api/notes", (req, res) => {
-        notesData = fs.readFileSync("./db/db.json", "utf8");
+        notesData = fs.readFileSync("../assets/db/db.json", "utf8");
 
         notesData = JSON.parse(notesData);
 
@@ -60,10 +59,13 @@ router
 
         notesData = JSON.stringify(notesData);
 
-        fs.writeFile("./db/db.json", "utf8");
+        fs.writeFile("../assets/db/db.json", "utf8");
 
         res.send(JSON.parse(notesData));
 
-    });
+    });    
+app.use("/", router);
 
-module.exports = router;
+app.listen(PORT, () => {
+    console.log("app listening on PORT" + PORT);
+})

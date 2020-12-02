@@ -14,7 +14,7 @@ router.get("*", (_req, res) => {
 })
 
 router.get("/api/notes", (_req, res) => {
-    return res.sendFile(path.json(__dirname, "./db/db.json"))
+    return res.sendFile(path.json(__dirname, "../assets/db/db.json"));
 })
 
 module.exports = router;
