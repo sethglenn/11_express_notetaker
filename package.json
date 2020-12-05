@@ -1,7 +1,7 @@
 {
   "name": "note-taker",
   "version": "1.0.0",
-  "description": "",
+  "description": "[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,5 +12,15 @@
   "dependencies": {
     "express": "^4.16.4",
     "nodemon": "^2.0.6"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sethglenn/11_express_notetaker.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/sethglenn/11_express_notetaker/issues"
+  },
+  "homepage": "https://github.com/sethglenn/11_express_notetaker#readme"
 }
