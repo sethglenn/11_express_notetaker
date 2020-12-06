@@ -13,7 +13,7 @@ This is an application that runs on express methods in the node.js terminal. It 
   deployed application : https://murmuring-tundra-70028.herokuapp.com/
 
   ## Images
-![Screenshot01](./assets/screenshot01.png)
+![Screenshot01](./instructions/screenshot01.png)
 
 
  ## Questions
