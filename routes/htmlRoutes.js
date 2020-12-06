@@ -13,8 +13,4 @@ router.get("*", (_req, res) => {
 
 })
 
-router.get("/api/notes", function(_req, res) {
-    return res.sendFile(path.json(__dirname, "./db/db.json"));
-  });
-
 module.exports = router;
