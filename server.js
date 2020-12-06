@@ -3,7 +3,6 @@ const fs = require("fs");
 const router = require("express").Router();
 const htmlRoutes = require("./routes/htmlRoutes");
 const path = require("path");
-// const db = require("./db/db.json");
 const readAsync = require("util").promisify(fs.readFile);
 
 
@@ -11,7 +10,6 @@ const readAsync = require("util").promisify(fs.readFile);
 
 const app = express();
 let notesData = [];
-// notesData = db;
 
 // Server routes/middleware
 const PORT = process.env.PORT || 8080;
@@ -25,10 +23,11 @@ app.use(express.static("public"));
 
 
 router
-    .get("/notes", (req, res) => {
+    .get("/notes", (_req, res) => {
         readAsync("./db/db.json", "utf8")
         .then(notes => {
-            notesData = notesData.concat(JSON.parse(notes))
+            // notesData = notesData.concat(JSON.parse(notes))
+            notesData = JSON.parse(notes);
         })
         
 
@@ -37,24 +36,30 @@ router
     });
 router
     .post("/notes", (req, res) => {
-        notesData = fs.readFileSync("./db/db.json", "utf8");
-        console.log(notesData);
+        readAsync("./db/db.json", "utf8")
+        // notesData = fs.readFileSync("./db/db.json", "utf8")
+        // console.log(notesData)
+        .then(notesData => {
+            notesData = JSON.parse(notesData);
 
-        notesData = JSON.parse(notesData);
+            req.body.id = notesData.length;
 
-        req.body.id = notesData.length;
+            notesData.push(req.body);
 
-        notesData.push(req.body);
+            notesData = JSON.stringify(notesData);
 
-        notesData = JSON.stringify(notesData);
+            fs.writeFile("./db/db.json", notesData, "utf8", function(err) {
+                if (err) throw err;
+            });
 
-        fs.writeFile("./db/db.json", "utf8");
-
-        res.json(JSON.parse(notesData));
+            res.json(notesData);
+        })
     });
 router
-    .delete("/notes", (req, res) => {
-        notesData = fs.readFileSync("./db/db.json", "utf8");
+    .delete("/notes/:id", (req, res) => {
+        readAsync("./db/db.json", "utf8")
+
+        .then(notesData => {
 
         notesData = JSON.parse(notesData);
 
@@ -64,11 +69,16 @@ router
 
         notesData = JSON.stringify(notesData);
 
-        fs.writeFile("./db/db.json", "utf8");
+        fs.writeFile("./db/db.json", notesData, "utf8", function(err){
+            if (err) throw err;
+        });
 
         res.send(JSON.parse(notesData));
 
-    });    
+        })
+
+    });
+
 app.use("/api", router);
 
 app.use("/", htmlRoutes );
