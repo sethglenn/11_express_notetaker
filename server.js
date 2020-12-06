@@ -83,6 +83,6 @@ app.use("/api", router);
 
 app.use("/", htmlRoutes );
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log("app listening on PORT" + PORT);
 })
